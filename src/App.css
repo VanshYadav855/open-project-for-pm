@@ -469,3 +469,112 @@
   padding: 3px 9px; border-radius: 9999px;
   display: inline-flex; align-items: center; gap: 4px;
 }
+
+/* ── Custom scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(10,102,194,0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(10,102,194,0.45); }
+
+/* ── Card staggered entrance ─────────────────────────────────────────────── */
+@keyframes cardFloat {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* First card in each tab grid has a short delay */
+.tab-content .card:first-child,
+.tab-content .card-flush:first-child {
+  animation: cardFloat 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.tab-content .card:nth-child(2),
+.tab-content .card-flush:nth-child(2) {
+  animation: cardFloat 0.35s 0.06s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.tab-content .card:nth-child(n+3) {
+  animation: cardFloat 0.35s 0.12s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Textarea focus glow matching AI input ───────────────────────────────── */
+textarea.ai-input:focus {
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  border-color: #7C3AED;
+}
+
+/* ── Smooth image rendering ──────────────────────────────────────────────── */
+img { image-rendering: crisp-edges; }
+
+/* ── Selection color ─────────────────────────────────────────────────────── */
+::selection { background: rgba(124,58,237,0.18); color: #1e293b; }
+
+/* ── Mobile: keep tabs single-line scrollable ────────────────────────────── */
+@media (max-width: 480px) {
+  .tab-pill { padding: 7px 11px; font-size: 12px; }
+  .screen-title { font-size: 21px; }
+  .card { padding: 18px; border-radius: 14px; }
+  .card-flush { border-radius: 14px; }
+  .progress-fill { animation-duration: 1s, 3s; }
+}
+
+/* ── Prevent layout shift while Inter loads ──────────────────────────────── */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+
+/* ── Print / focus-visible accessibility ─────────────────────────────────── */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #7C3AED;
+  outline-offset: 2px;
+}
+
+/* ── Toast notification ───────────────────────────────────────────────────── */
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-14px) scale(0.94); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)     scale(1);    }
+}
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0)     scale(1);    }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-8px)  scale(0.96); }
+}
+
+.toast-notification {
+  position: fixed;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9999;
+  white-space: nowrap;
+  /* Subtle glass border */
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: toastSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+}
+
+/* ── Success button state (green flash) ──────────────────────────────────── */
+.btn-success {
+  background: linear-gradient(135deg, #10B981, #059669) !important;
+  box-shadow: 0 2px 10px rgba(16,185,129,0.3), 0 1px 0 rgba(255,255,255,0.15) inset !important;
+}
+.btn-success:hover {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.4) !important;
+}
+
+

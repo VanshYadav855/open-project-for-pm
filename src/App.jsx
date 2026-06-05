@@ -19,6 +19,22 @@ function AIBadge() {
   return <span className="ai-badge">✦ AI</span>
 }
 
+/* ─── Toast Notification ───────────────────────────────────────────────────── */
+function Toast({ message, type = 'ai' }) {
+  const bg = type === 'ai'
+    ? 'linear-gradient(135deg, #7C3AED, #5b21b6)'
+    : 'linear-gradient(135deg, #10B981, #059669)'
+  const shadow = type === 'ai'
+    ? '0 8px 28px rgba(124,58,237,0.45)'
+    : '0 8px 28px rgba(16,185,129,0.4)'
+  return (
+    <div className="toast-notification" style={{ background: bg, boxShadow: shadow }}>
+      <span style={{ fontSize: 15 }}>{type === 'ai' ? '✦' : '✓'}</span>
+      <span>{message}</span>
+    </div>
+  )
+}
+
 /* ─── Confidence Score Ring (SVG) ──────────────────────────────────────────── */
 function ConfidenceRing({ score = 78 }) {
   const [animated, setAnimated] = useState(false)
@@ -77,6 +93,11 @@ function ConfidenceRing({ score = 78 }) {
 /* ─── App Shell ────────────────────────────────────────────────────────────── */
 function App() {
   const [activeTab, setActiveTab] = useState('outreach')
+
+  // Scroll to top smoothly on every tab switch
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [activeTab])
 
   const tabs = [
     {
@@ -193,7 +214,14 @@ function OutreachComposer() {
     "Hi Sarah, I came across your recent post on AI product strategy and it really resonated with my work at [Company]. I'm exploring PM roles at consumer AI companies and would love to hear how you navigated the transition to Google. Would you be open to a 15-min chat?"
   )
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [success, setSuccess]     = useState(false)
+  const [toast, setToast]         = useState(null)
+  const [error, setError]         = useState(null)
+
+  const fireToast = (msg, type) => {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 2800)
+  }
 
   const profile = {
     name:           'Sarah Chen',
@@ -216,10 +244,16 @@ function OutreachComposer() {
       console.log('Response data:', data)
       if (data.error) throw new Error(data.error)
       setMessage(data.message)
+      setSuccess(true)
+      fireToast('AI message generated!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } catch (err) {
       console.error('Error fetching:', err)
       // Fallback to mock data if API fails
       setMessage("Hi Sarah! Loved your recent post on AI product strategy. Your work at Google is inspiring - I'd love to connect and learn more about your journey!")
+      setSuccess(true)
+      fireToast('AI message generated!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } finally {
       setIsLoading(false)
     }
@@ -331,9 +365,15 @@ function OutreachComposer() {
 
             <div className="flex flex-wrap gap-3 mt-4">
               {/* AI button — calls Claude API */}
-              <button onClick={generateMessage} disabled={isLoading} className="btn-ai">
+              <button
+                onClick={generateMessage}
+                disabled={isLoading}
+                className={`btn-ai ${success ? 'btn-success' : ''}`}
+              >
                 {isLoading ? (
                   <><Spinner /><span>✦ AI is thinking…</span></>
+                ) : success ? (
+                  <><span style={{ fontSize: 15 }}>✓</span><span>Generated!</span></>
                 ) : (
                   <>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -344,6 +384,7 @@ function OutreachComposer() {
                   </>
                 )}
               </button>
+              {toast && <Toast message={toast.msg} type={toast.type} />}
               <button className="btn-linkedin">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -374,7 +415,14 @@ function ProfileCoach() {
     { missing: 'PM tools keywords',    fix: 'Add Figma, Jira, Mixpanel to skills', status: 'missing'    },
   ])
   const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess]     = useState(false)
+  const [toast, setToast]         = useState(null)
   const [error, setError]         = useState(null)
+
+  const fireToast = (msg, type) => {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 2800)
+  }
 
   const analyze = async () => {
     setIsLoading(true)
@@ -390,6 +438,9 @@ function ProfileCoach() {
       if (data.gaps && data.gaps.length > 0) {
         setGaps(data.gaps.map(g => ({ ...g, status: g.status || 'missing' })))
       }
+      setSuccess(true)
+      fireToast('Profile analysis complete!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } catch (err) {
       // Fallback to mock data if API fails
       setGaps([
@@ -398,6 +449,9 @@ function ProfileCoach() {
         { missing: 'Strong Recommendations', fix: 'Ask 2 colleagues for recommendations',    status: 'needs_work' },
         { missing: 'PM Tools',              fix: 'Add Figma, Jira, Mixpanel to your skills', status: 'missing'    },
       ])
+      setSuccess(true)
+      fireToast('Profile analysis complete!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } finally {
       setIsLoading(false)
     }
@@ -430,9 +484,16 @@ function ProfileCoach() {
             style={{ padding: '12px 16px' }}
           />
           {/* AI button — calls Claude API */}
-          <button onClick={analyze} disabled={isLoading} className="btn-ai" style={{ flexShrink: 0 }}>
+          <button
+            onClick={analyze}
+            disabled={isLoading}
+            className={`btn-ai ${success ? 'btn-success' : ''}`}
+            style={{ flexShrink: 0 }}
+          >
             {isLoading ? (
               <><Spinner /><span>✦ AI is thinking…</span></>
+            ) : success ? (
+              <><span style={{ fontSize: 15 }}>✓</span><span>Analysis done!</span></>
             ) : (
               <>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -443,6 +504,7 @@ function ProfileCoach() {
               </>
             )}
           </button>
+          {toast && <Toast message={toast.msg} type={toast.type} />}
         </div>
 
         {error && <p className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>}
@@ -509,7 +571,14 @@ function JobDebrief() {
     fix_now:   "Your headline doesn't mention product management. Update it before applying — recruiters scan headlines first.",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess]     = useState(false)
+  const [toast, setToast]         = useState(null)
   const [error, setError]         = useState(null)
+
+  const fireToast = (msg, type) => {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 2800)
+  }
 
   const getDebrief = async () => {
     setIsLoading(true)
@@ -523,6 +592,9 @@ function JobDebrief() {
       const data = await response.json()
       if (data.error) throw new Error(data.error)
       if (data.debrief) setDebrief(data.debrief)
+      setSuccess(true)
+      fireToast('Job debrief ready!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } catch (err) {
       // Fallback to mock data if API fails
       setDebrief({
@@ -530,6 +602,9 @@ function JobDebrief() {
         watch_out: 'No ML product experience listed - highlight AI tools you use',
         fix_now:   "Update your headline to include 'Product Manager'!",
       })
+      setSuccess(true)
+      fireToast('Job debrief ready!', 'success')
+      setTimeout(() => setSuccess(false), 2500)
     } finally {
       setIsLoading(false)
     }
@@ -620,11 +695,18 @@ function JobDebrief() {
               <button
                 onClick={getDebrief}
                 disabled={isLoading}
-                className="btn-ai"
+                className={`btn-ai ${success ? 'btn-success' : ''}`}
                 style={{ padding: '8px 16px', fontSize: 13 }}
               >
-                {isLoading ? <><Spinner /><span>✦ AI is thinking…</span></> : 'Get Debrief'}
+                {isLoading ? (
+                  <><Spinner /><span>✦ AI is thinking…</span></>
+                ) : success ? (
+                  <><span style={{ fontSize: 14 }}>✓</span><span>Debrief ready!</span></>
+                ) : (
+                  'Get Debrief'
+                )}
               </button>
+              {toast && <Toast message={toast.msg} type={toast.type} />}
             </div>
 
             {error && <p className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>}
