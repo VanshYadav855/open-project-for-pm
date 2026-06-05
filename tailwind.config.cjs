@@ -12,7 +12,7 @@ module.exports = {
                 'linkedin-purple': '#7C3AED'
             },
             fontFamily: {
-                sans: ['system-ui', 'sans-serif']
+                sans: ['Inter', 'system-ui', 'sans-serif']
             }
         },
     },

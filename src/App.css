@@ -1,0 +1,471 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  LinkedIn AI — Premium Design System v2
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Tab entrance animation ──────────────────────────────────────────────── */
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tab-content { animation: tabFadeIn 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ── Animated gradient progress bar ─────────────────────────────────────── */
+@keyframes progressReveal {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes progressShimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+.progress-track {
+  background: #e8edf4;
+  border-radius: 9999px;
+  height: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #0A66C2 0%, #4F46E5 50%, #7C3AED 100%);
+  background-size: 200% 100%;
+  transform-origin: left;
+  animation:
+    progressReveal 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    progressShimmer 3s 1.5s ease infinite;
+}
+
+/* ── Profile banner with shimmer ─────────────────────────────────────────── */
+@keyframes bannerShimmer {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(280%) skewX(-15deg); }
+}
+.profile-banner {
+  height: 108px;
+  background: linear-gradient(135deg, #0d3d6e 0%, #0A66C2 28%, #3b5bd5 60%, #7C3AED 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.profile-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.profile-banner::after {
+  content: '';
+  position: absolute;
+  top: -20%; left: 0;
+  width: 35%; height: 140%;
+  background: rgba(255,255,255,0.14);
+  animation: bannerShimmer 4.5s ease-in-out infinite;
+}
+
+/* ── Glassmorphism Navbar ─────────────────────────────────────────────────── */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(10, 102, 194, 0.1);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 2px 20px rgba(0,0,0,0.06);
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 8px 28px rgba(0,0,0,0.06);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s ease;
+  position: relative;
+}
+/* Gradient top-bar reveal on hover */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, #0A66C2 0%, #4F46E5 50%, #7C3AED 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.06), 0 24px 56px rgba(0,0,0,0.1);
+  border-color: rgba(10,102,194,0.16);
+}
+.card:hover::after { transform: scaleX(1); }
+
+/* Card variant: flush (no padding, overflow hidden for banner) */
+.card-flush {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 8px 28px rgba(0,0,0,0.06);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s ease;
+}
+.card-flush:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.06), 0 24px 56px rgba(0,0,0,0.1);
+}
+.card-flush-body { padding: 20px 22px 22px; }
+
+/* ── AI Badge (pulsing purple) ───────────────────────────────────────────── */
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+  50%       { box-shadow: 0 0 0 5px rgba(124,58,237,0.07); }
+}
+.ai-badge {
+  background: linear-gradient(135deg, #f3eeff, #ece9ff);
+  color: #7C3AED;
+  border: 1px solid rgba(124,58,237,0.2);
+  padding: 3px 10px 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  animation: badgePulse 3s ease infinite;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+/* AI / purple button — shimmer on hover */
+.btn-ai {
+  background: linear-gradient(135deg, #7C3AED 0%, #5b21b6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.18s ease,
+              background 0.18s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(124,58,237,0.28), 0 1px 0 rgba(255,255,255,0.15) inset;
+  position: relative;
+  overflow: hidden;
+}
+/* Shimmer sweep */
+.btn-ai::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: -65%;
+  width: 35%;
+  background: rgba(255,255,255,0.22);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+.btn-ai:hover:not(:disabled)::before { left: 135%; }
+.btn-ai:hover:not(:disabled) {
+  transform: scale(1.04) translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124,58,237,0.4);
+  background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+}
+.btn-ai:active:not(:disabled) { transform: scale(0.97); }
+.btn-ai:disabled { opacity: 0.52; cursor: not-allowed; }
+
+/* LinkedIn / blue button */
+.btn-linkedin {
+  background: linear-gradient(135deg, #0A66C2 0%, #095299 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(10,102,194,0.28), 0 1px 0 rgba(255,255,255,0.15) inset;
+}
+.btn-linkedin:hover {
+  transform: scale(1.04) translateY(-1px);
+  box-shadow: 0 8px 24px rgba(10,102,194,0.4);
+}
+.btn-linkedin:active { transform: scale(0.97); }
+
+/* ── Navbar Tab Pills ─────────────────────────────────────────────────────── */
+.tab-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.tab-pill.active {
+  background: linear-gradient(135deg, #0A66C2, #1a7fd4);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(10,102,194,0.38), 0 1px 0 rgba(255,255,255,0.2) inset;
+}
+.tab-pill.inactive {
+  background: #EEF3F8;
+  color: #5a6a7a;
+}
+.tab-pill.inactive:hover {
+  background: #dde8f5;
+  color: #0A66C2;
+  box-shadow: 0 2px 8px rgba(10,102,194,0.12);
+}
+
+/* ── Inputs with purple focus ─────────────────────────────────────────────── */
+.ai-input {
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  color: #1e293b;
+}
+.ai-input::placeholder { color: #94a3b8; }
+.ai-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  border-color: #7C3AED;
+  background: #ffffff;
+}
+
+/* ── Gap cards ────────────────────────────────────────────────────────────── */
+.gap-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  background: #ffffff;
+  border-radius: 13px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+.gap-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+}
+.gap-card.status-missing    { border-left: 4px solid #EF4444; }
+.gap-card.status-needs_work { border-left: 4px solid #F59E0B; }
+.gap-card.status-good       { border-left: 4px solid #10B981; }
+
+/* Status chips inside gap cards */
+.status-chip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+}
+.chip-missing    { background: #FEF2F2; color: #DC2626; border: 1px solid rgba(220,38,38,0.2); }
+.chip-needs_work { background: #FFFBEB; color: #B45309; border: 1px solid rgba(180,83,9,0.2);  }
+.chip-good       { background: #F0FDF4; color: #16A34A; border: 1px solid rgba(22,163,74,0.2); }
+
+/* ── Stats pill ──────────────────────────────────────────────────────────── */
+.stats-pill {
+  background: linear-gradient(135deg, #EEF3F8 0%, #eef1ff 100%);
+  border-left: 3px solid #0A66C2;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #0A66C2;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+/* ── Keyword chips (Job screen) ──────────────────────────────────────────── */
+.keyword-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.keyword-match   { background: #f0fdf4; color: #16A34A; border: 1px solid rgba(22,163,74,0.22); }
+.keyword-missing { background: #fef2f2; color: #DC2626; border: 1px solid rgba(220,38,38,0.22); }
+
+/* ── Insight cards (debrief) ─────────────────────────────────────────────── */
+.insight-card {
+  padding: 16px;
+  border-radius: 13px;
+  border: 1px solid;
+  transition: transform 0.2s ease;
+}
+.insight-card:hover { transform: translateX(4px); }
+.insight-green  { background: #f0fdf4; border-color: rgba(22,163,74,0.18); }
+.insight-yellow { background: #fffbeb; border-color: rgba(234,179,8,0.18); }
+.insight-red    { background: #fef2f2; border-color: rgba(239,68,68,0.18); }
+
+/* ── Activity timeline ───────────────────────────────────────────────────── */
+.activity-line { position: relative; }
+.activity-line:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 42px;
+  bottom: -8px;
+  width: 2px;
+  background: linear-gradient(180deg, #e0e8f5, transparent);
+}
+
+/* ── Nav avatar ──────────────────────────────────────────────────────────── */
+.nav-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0A66C2, #0958a8);
+  display: flex; align-items: center; justify-content: center;
+  color: #ffffff;
+  font-size: 13px; font-weight: 800;
+  letter-spacing: 0.04em;
+  outline: 3px solid rgba(10,102,194,0.18);
+  outline-offset: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(10,102,194,0.25);
+}
+.nav-avatar:hover {
+  outline-color: rgba(10,102,194,0.4);
+  transform: scale(1.06);
+}
+
+/* ── Typography ──────────────────────────────────────────────────────────── */
+.screen-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #0A66C2, #7C3AED);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.screen-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  margin: 0 0 4px;
+  line-height: 1.15;
+}
+.screen-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+.section-title-underline {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  display: inline-block;
+  border-bottom: 3px solid #0A66C2;
+  padding-bottom: 3px;
+}
+.section-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* ── Divider with label ──────────────────────────────────────────────────── */
+.divider-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 16px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.divider-label::before, .divider-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+}
+
+/* ── Score ring wrapper ──────────────────────────────────────────────────── */
+.score-ring-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── Connecting line for activity ────────────────────────────────────────── */
+.connection-dot {
+  width: 6px; height: 6px;
+  background: #0A66C2;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── Small tag pills ─────────────────────────────────────────────────────── */
+.tag-blue {
+  background: #EEF3F8; color: #0A66C2;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 9999px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.tag-purple {
+  background: #F3EEFF; color: #7C3AED;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 9999px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.tag-green {
+  background: #f0fdf4; color: #16A34A;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 9999px;
+  display: inline-flex; align-items: center; gap: 4px;
+}

@@ -4,8 +4,30 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Base stays #F3F2EF per design rules; radial blobs add depth without distraction */
   background-color: #F3F2EF;
+  background-image:
+    radial-gradient(ellipse at 16% 0%,   rgba(10,102,194,0.09) 0%, transparent 46%),
+    radial-gradient(ellipse at 84% 100%, rgba(124,58,237,0.07) 0%, transparent 46%);
+  background-attachment: fixed;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-content {
+  animation: tabFadeIn 0.2s ease forwards;
 }
